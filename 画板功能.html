@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<!-- 
+		  canvas 三要素 
+		  id : 唯一标识
+		  width: 画布内容宽度的像素大小
+		  height: 画布内容的高度像素大小
+		  
+		  canvas  仅仅只是一个画布标签，要画内容需要 使用 js
+		 -->
+		<button type="button" id="download">下载内容</button>
+		<canvas id="canvas1" width="300" height="300">
+		</canvas>
+
+		<script>
+			let rectList = []
+			let detX = 0
+			let detY = 0
+			let detW = 0
+			let detH = 0
+			// 1.找到画布对象 
+			const canvas1 = document.querySelector('#canvas1')
+			// 2.上下文对象（画笔）
+
+			const ctx = canvas1.getContext('2d')
+
+			// 设置黑板 
+			ctx.fillStyle = 'black'
+			ctx.fillRect(0, 0, 300, 300)
+			// ctx.globalCompositeOperation = 'destination-out'
+			let isRub = false
+
+			let rawX = 0
+			let rawY = 0
+
+			canvas1.onmousedown = e => {
+				rawX = e.offsetX
+				rawY = e.offsetY
+				isRub = true
+				console.log('onmousedown',rawX,rawY)
+			}
+			canvas1.onmouseup = e => {
+
+				isRub = false
+				console.log('onmousedown',detX,detY)
+				rectList.push({detX,detY,detW,detH})
+			}
+
+
+
+
+			canvas1.onmousemove = (e) => {
+				if (isRub) {
+					/*  写字 */
+					// ctx.beginPath()
+					// const x = e.offsetX
+					// const y = e.offsetY
+					// // ctx.arc(x,y,1,0,2*Math.PI)
+					// // ctx.fill()
+					// ctx.moveTo(rawX, rawY)
+					// ctx.lineTo(x, y)
+					// ctx.lineWidth = 1
+					// ctx.strokeStyle = 'red'
+					// ctx.stroke()
+					// ctx.closePath()
+
+					// rawX = x
+					// rawY = y
+
+					/* 画矩形 */
+					const x = e.offsetX
+					const y = e.offsetY
+					// console.log(x, y)
+					ctx.clearRect(0, 0, 300, 300)
+					ctx.fillStyle = 'black'
+					ctx.fillRect(0, 0, 300, 300)
+				
+					detX = rawX
+					detY = rawY
+					detW = x - rawX
+					detH = y - rawY
+					ctx.beginPath()
+					ctx.strokeStyle = '#FF0000'
+					for (let rectItem of rectList) {
+						ctx.strokeRect(rectItem.detX, rectItem.detY, rectItem.detW, rectItem.detH)
+					}
+					ctx.strokeRect(rawX, rawY, x - rawX, y - rawY)
+
+					ctx.closePath()
+
+				}
+
+			}
+			// 下载内容
+			const downloadEl = document.querySelector('#download')
+			downloadEl.addEventListener('click', () => {
+				// const imgEl = new Image()
+				// imgEl.src = canvas1.toDataURL()
+				const aEl = document.createElement('a')
+				aEl.href = canvas1.toDataURL()
+				aEl.download = '333'
+				aEl.click()
+				document.body.appendChild(aEl)
+				console.log('愚蠢的地球人~', )
+			})
+		</script>
+	</body>
+</html>

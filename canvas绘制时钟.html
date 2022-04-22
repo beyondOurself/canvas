@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<!-- 
+		  canvas 三要素 
+		  id : 唯一标识
+		  width: 画布内容宽度的像素大小
+		  height: 画布内容的高度像素大小
+		  
+		  canvas  仅仅只是一个画布标签，要画内容需要 使用 js
+		 -->
+		 <canvas id='canvas-dt' width="100" height="10"></canvas>
+		<canvas id="canvas1" width="600" height="600">
+		</canvas>
+
+		<script>
+			// 1.找到画布对象 
+			const canvas1 = document.querySelector('#canvas1')
+			const canvasDt = document.querySelector('#canvas-dt')
+			// 2.上下文对象（画笔）
+
+			const ctx = canvas1.getContext('2d')
+			const ctx1 = canvasDt.getContext('2d')
+			setInterval( ()=>{
+				ctx1.clearRect(0,0,100,50)
+				const date2 = new Date()
+				let hour2 = date2.getHours()
+				hour2 = hour2 >  12 ? hour2-12 : hour2 
+				let minute2 = date2.getMinutes()
+				let second2 = date2.getSeconds()
+				ctx1.font = '10px 微软雅黑'
+				ctx1.fillText(`${hour2}:${minute2}:${second2}`, 50, 10) // 内容和位置
+			} ,1000)
+			// ctx.fillStyle = 'green'
+			// ctx.fillRect(0,0,100,100)
+			// ctx.save()
+			// ctx.fillStyle = 'pink'
+			// ctx.fillRect(0,0,50,100)
+			// // 保留画笔的状态
+			// ctx.save()
+			// // 旋转整个坐标轴
+			// ctx.rotate(Math.PI/8)
+
+			// // 移动坐标系位置 x : 0 -> 100
+			// ctx.translate(100,0)
+			// //  x轴, 跟 y轴 都放大两倍
+			// ctx.scale(2,2)
+			// ctx.fillStyle = 'aqua'
+			// ctx.fillRect(0,0,50,100)
+
+			//    // 重置 画笔
+			// ctx.restore()
+			// ctx.restore() // 一步步往上恢复
+
+
+			/* 绘制时钟 */
+		const renderClock = () => {	
+			ctx.clearRect(0,0,600,600)
+		    // 保持坐标系 位置
+			ctx.save()
+			// 移动坐标轴 
+			ctx.translate(300, 300)
+			ctx.rotate(-Math.PI/2)
+			// 保持移动后坐标系 位置
+			ctx.save()
+
+
+			// 绘制底盘园
+
+			ctx.beginPath()
+
+			ctx.arc(0, 0, 200, 0, 2 * Math.PI)
+			ctx.strokeStyle = 'lightgray'
+			ctx.lineWidth = 10
+			ctx.stroke()
+
+			ctx.closePath()
+			
+			// 绘制分钟刻度
+			
+			let minuteScales = 60 
+			
+			while (minuteScales --) {
+				
+				ctx.rotate(Math.PI / 30)
+				ctx.beginPath()
+				ctx.moveTo(180,0)
+				ctx.lineTo(190,0)
+				ctx.strokeStyle = 'pink'
+				ctx.lineWidth = 1
+				ctx.stroke()
+				ctx.closePath()
+			}
+			// 回退坐标系
+			ctx.restore()
+			// 重新保存坐标系
+			ctx.save()
+
+			// 绘制时钟刻度线
+
+			let hourScales = 12
+			while (hourScales--) {
+				ctx.rotate(Math.PI / 6)
+				ctx.beginPath()
+				ctx.moveTo(180, 0)
+				ctx.lineTo(200, 0)
+				ctx.strokeStyle = 'red'
+				ctx.lineWidth = 5
+				
+				ctx.stroke()
+				
+				ctx.closePath()
+				
+			}
+			
+			ctx.restore()
+			ctx.save()
+			
+			 ctx.beginPath()
+			 ctx.moveTo(0,0)
+			 ctx.lineTo(100,0) 
+			 ctx.strokeStyle = 'green'
+			 ctx.lineWidth = 10
+			 ctx.stroke()
+			 ctx.closePath()
+			 ctx.beginPath()
+			 ctx.moveTo(0,0)
+			 ctx.lineTo(0,100)
+			 ctx.strokeStyle = 'red'
+			 ctx.lineWidth = 10
+			 ctx.stroke()
+			 ctx.closePath()
+			
+			
+			let nums = 12
+			while (nums--) {
+			ctx.rotate(-2*Math.PI/12 )
+			ctx.beginPath()
+			ctx.font = '10px 微软雅黑'
+			ctx.strokeStyle = 'black'
+			ctx.fillText(nums ,0,180)
+			
+			ctx.closePath()
+			
+			}
+			
+			ctx.restore()
+			ctx.save()
+			
+			
+			// 获取时, 分 , 秒
+			const date = new Date()
+			let hour = date.getHours()
+			hour = hour >  12 ? hour-12 : hour 
+			let minute = date.getMinutes()
+			let second = date.getSeconds()
+			
+			
+			
+			
+			// 绘制秒针 
+			 
+			ctx.rotate(2*Math.PI / 60 * second)
+			ctx.beginPath()
+			ctx.moveTo(-10,0)
+			ctx.lineTo(180,0)
+			ctx.strokeStyle = 'aqua'
+			ctx.lineWidth =2
+			ctx.stroke()
+			ctx.closePath()
+			
+			ctx.restore()
+			ctx.save()
+			
+			// 绘制分针
+			
+			ctx.rotate(2*Math.PI / 60 * minute + 2*Math.PI/3600 * second )
+			ctx.beginPath()
+			ctx.moveTo(-10,0)
+			ctx.lineTo(100,0)
+			ctx.strokeStyle = 'antiquewhite'
+			ctx.lineWidth =5
+			ctx.stroke()
+			ctx.closePath()
+			
+			
+			ctx.restore()
+			ctx.save()
+			
+			// 绘制时针
+			
+			ctx.rotate( 2*Math.PI/12 + 2*Math.PI / (60*12 * minute) + 2*Math.PI/(3600 * 12 * second) )
+			ctx.beginPath()
+			ctx.moveTo(-10,0)
+			ctx.lineTo(80,0)
+			ctx.strokeStyle = 'black'
+			ctx.lineWidth =6
+			ctx.stroke()
+			ctx.closePath()
+			
+			// 画个中间的圆圈
+			ctx.beginPath()
+			ctx.arc(0,0,15,0,2*Math.PI)
+			ctx.fillStyle = 'antiquewhite'
+			ctx.fill()
+			ctx.closePath()
+			
+			ctx.restore()
+			ctx.restore()
+			
+			}
+			
+			// renderClock()
+			setInterval(() => {
+				 renderClock()
+			},1000)
+			
+			
+		</script>
+	</body>
+</html>

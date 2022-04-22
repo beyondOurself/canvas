@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			.ggl-wrap {
+				height: 100px;
+				width: 400px;
+				position: relative;
+				margin-top: 100px;
+				background-color: red;
+			}
+
+			.ggl-content {
+				position: absolute;
+				background-color: red;
+				height: 100%;
+				width: 400px;
+				line-height: 100px;
+				text-align: center;
+				color: orange;
+				font-size: 2em;
+				font-weight: bold;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+
+			}
+
+			.ggl-shade {
+				position: absolute;
+				/* background-color: gray; */
+				/* z-index: 2; */
+				/* height: 100%;
+			 width: 100%; */
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 
+		  canvas 三要素 
+		  id : 唯一标识
+		  width: 画布内容宽度的像素大小
+		  height: 画布内容的高度像素大小
+		  
+		  canvas  仅仅只是一个画布标签，要画内容需要 使用 js
+		 -->
+
+		<div class="ggl-wrap">
+			<div class="ggl-content">
+				谢谢惠顾
+			</div>
+			<canvas id="canvas1" class="ggl-shade" width="400" height="100">
+			</canvas>
+		</div>
+
+
+
+		<script>
+			// 1.找到画布对象 
+			const canvas1 = document.querySelector('#canvas1')
+			const gglDom = document.querySelector('#ggl-wrap')
+			// 2.上下文对象（画笔）
+
+			const ctx = canvas1.getContext('2d')
+			ctx.fillStyle = 'gray'
+			ctx.fillRect(0, 0, 400, 100)
+			ctx.globalCompositeOperation = 'destination-out'
+			let isRub = false
+			canvas1.onmousedown = (e) => {
+				isRub = true
+
+
+			}
+			canvas1.onmousemove = (e) => {
+				if (isRub) {
+					const x = e.offsetX
+					const y = e.offsetY
+					ctx.arc(x, y, 10, 0, 2 * Math.PI)
+					ctx.fill()
+				}
+			}
+
+			canvas1.onmouseup = (e) => {
+				isRub = false
+
+			}
+
+
+
+			// 画个表盘 
+		</script>
+	</body>
+</html>

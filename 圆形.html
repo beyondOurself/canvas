@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<!-- 
+		  canvas 三要素 
+		  id : 唯一标识
+		  width: 画布内容宽度的像素大小
+		  height: 画布内容的高度像素大小
+		  
+		  canvas  仅仅只是一个画布标签，要画内容需要 使用 js
+		 -->
+		<canvas id="canvas1" width="600" height="600">
+
+
+		</canvas>
+
+		<script>
+			// 1.找到画布对象 
+			const canvas1 = document.querySelector('#canvas1')
+			// 2.上下文对象（画笔）
+		
+			const ctx = canvas1.getContext('2d')
+			
+			// 默认为 false ,是顺时针，true 逆时针
+			// 圆心 x ,y , | 半径 | 起始角度 | 顺时针 ，逆时针
+			ctx.arc(300,300,100,0 ,2*Math.PI,false)
+			ctx.fillStyle='lightpink'
+			ctx.fill()
+			ctx.stroke()
+		</script>
+	</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<!-- 
+		  canvas 三要素 
+		  id : 唯一标识
+		  width: 画布内容宽度的像素大小
+		  height: 画布内容的高度像素大小
+		  
+		  canvas  仅仅只是一个画布标签，要画内容需要 使用 js
+		 -->
+		<canvas id="canvas1" width="800" height="600">
+		当前浏览器不兼容 canvas
+		</canvas>
+		<video   id='video1' width="800" src="img/333.mp4" controls="controls"></video>
+
+		<script>
+			// 1.找到画布对象 
+			const canvas1 = document.querySelector('#canvas1')
+			// 2.上下文对象（画笔）
+		
+			const ctx = canvas1.getContext('2d')
+			
+			
+			// 画图
+			// ctx.drawImage(图像对象, 图像裁剪的位置 x, 图像裁剪的位置y, c裁剪的宽度,裁剪的高度 x , y ,宽度,高度)
+			// const img = new Image()
+			// img.src = 'img/111.jpg'
+			// const img2 = new Image()
+			// img2.src = 'img/222.jpg'
+			// // 图片载入后在绘图 
+			// img.onload = () => {
+			// 	ctx.drawImage(img,50,50)
+			// }
+			
+			// img2.onload = () => {
+			// 	ctx.drawImage(img2,0,0,1000,200,200,50,200,200)
+			// 	ctx.fillText('愚蠢的地球人',210,10)
+			// }
+			
+			/*=========================  抽取视频帧挥霍到  canvas  =============================   */
+			
+			const video =  document.querySelector('#video1')
+			
+			let interId ; 
+			let optsX = 800
+		 video.onplay = () => {
+			 
+			  interId = setInterval(()=> {
+				  ctx.clearRect(0,0,800,800)
+				  ctx.fillRect(0,0,800,800)
+				  ctx.drawImage(video,0,5,800,600)
+				  optsX -= 2
+				  if(optsX === -100){
+					  optsX = 800
+				  }
+				  ctx.strokeStyle = 'blue'
+				  ctx.font = '20px 微软雅黑'
+				  ctx.strokeText('愚蠢的地球人',optsX,0)
+				  ctx.strokeText('愚蠢的地球人1',optsX,10)
+				  ctx.strokeText('愚蠢的地球人2',optsX,50)
+				  ctx.strokeText('愚蠢的地球人3',optsX,100)
+				  ctx.strokeText('愚蠢的地球人4',optsX,150)
+				  ctx.strokeText('愚蠢的地球人5',optsX,200)
+			  },16)
+			 
+		 }
+		 
+		 video.onpause = () => {
+			 
+			 clearInterval(interId)
+		 }
+		
+		// 获取数据 获得一个像素矩形数组
+	    // ctx.getImageData(x,x,100,100)
+		// 设置 像素数组
+		  // ctx.putImageData()
+		
+			
+		</script>
+	</body>
+</html>
